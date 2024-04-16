@@ -1,0 +1,19 @@
+var
+    MsgBandage = "You finish applying the bandages|You put the bloody bandage|failed";
+
+function Autoheal() {
+    while (true) {
+        while (!Player.Dead() && Orion.Count("bandage")) {
+            if (Player.Hits() < Player.MaxHits() - 1) {
+                Orion.ClearJournal(MsgBandage);
+                Orion.BandageSelf();
+                TimerBandage = Orion.Now() + 5000;
+                while (!Orion.InJournal(MsgBandage) && Orion.Now() < TimerBandage) {
+                    Orion.Wait(100);
+                }
+            } else {
+                Orion.Wait(100);
+            }
+        }
+    }
+}
