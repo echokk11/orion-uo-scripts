@@ -1,0 +1,80 @@
+function 药包到背包() {
+    var bags = Orion.FindTypeEx('0x0E76', 'any', backpack);
+    bags.forEach(function (bag) {
+        Orion.UseObject(bag.Serial());
+        Orion.Wait(500);
+        var herbs = Orion.FindTypeEx('0x0F7B|0x0F84|0x0F8D|0x0F88|0x0F8C|0x0F85|0x0F86|0x0F7A', 'any', bag.Serial());
+        Orion.Print(herbs.Count);
+        herbs.forEach(function (herb) {
+            Orion.MoveItem(herb.Serial());
+            Orion.Wait(100);
+        });
+    });
+    bags.forEach(function (bag) {
+        Orion.MoveItem(bag.Serial(), 1, ground, Player.X(), Player.Y(), Player.Z() - 5);
+        Orion.Wait(80);
+    });
+}
+
+function 药罐存药() {
+    var speedRate = 1.0; // 变速倍数
+    var yaoguan = Orion.FindTypeEx("0x0EFE", -1, backpack)[0]
+
+    var CheckTime = Orion.Now(); //
+
+    while (true) {
+        Orion.DragItem(yaoguan.Serial(), 1);
+        Orion.Wait(200 * speedRate);
+        Orion.DropDraggedItem(self);
+        Orion.Wait(200 * speedRate);
+
+        if (Orion.Now() > CheckTime + 5000 * speedRate)
+
+            Orion.Print("START");
+        if (Orion.InJournal("请双击查看", self, 0, 'any', CheckTime, 0)) {
+            Orion.Print("请双击查看");
+            CheckTime = Orion.Now(); //
+
+            continue;
+        }
+
+        if (Orion.InJournal("请双击释放", self, 0, 'any', CheckTime, 0)) {
+            Orion.Print("请双击释放");
+            CheckTime = Orion.Now(); // 
+
+            continue;
+        }
+
+        if (Orion.InJournal("请双击并", self, 0, 'any', CheckTime, 0)) {
+            var herbs = Orion.FindTypeEx('0x0F7B|0x0F84|0x0F8D|0x0F88|0x0F8C|0x0F85|0x0F86|0x0F7A', 'any', backpack);
+
+            Orion.Print("Count:" + herbs.length);
+            herbs.forEach(function (herb) {
+                Orion.UseObject(yaoguan.Serial())
+                if (Orion.WaitForTarget(1000 * speedRate))
+                    Orion.TargetObject(herb.Serial());
+                Orion.Wait(50 * speedRate);
+            });
+
+            Orion.Print("请双击并");
+
+            // 补药开始
+            // 补药开始-补药结束为存药后补充一次药
+            Orion.DragItem(yaoguan.Serial(), 1);
+            Orion.Wait(200 * speedRate);
+            Orion.DropDraggedItem(self);
+            Orion.Wait(200 * speedRate);
+
+            Orion.Wait(500 * speedRate)
+            Orion.DragItem(yaoguan.Serial(), 1);
+            Orion.Wait(200 * speedRate);
+            Orion.DropDraggedItem(self);
+            Orion.Wait(200 * speedRate);
+
+            Orion.UseObject(yaoguan.Serial());
+            // 补药结束
+            return;
+        }
+        Orion.Wait(10);
+    }
+}

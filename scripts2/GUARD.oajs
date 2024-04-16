@@ -1,0 +1,11 @@
+function guard() {
+    while (true) {
+        if (Player.Mana() > 10) {
+            Orion.Say('GUARD')
+            Orion.Wait('3000')
+        } else {
+            Orion.Say('GUARD')
+            Orion.Wait('3000')
+        }
+    }
+}

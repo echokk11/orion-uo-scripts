@@ -1,0 +1,218 @@
+// 使用方法，到Hotkeys界面，点Open Hotkeys dialog
+// 在Hotkeys界面 点ADD，在Hotkey Info 下面Hotkey:设置所需热键，Type选Run script，Action选对应功能
+// 功能如下：
+// 小加血()
+// 跑路()
+//
+// var Paralyze_scroll = '0x1F52';
+// var FlameStrike_scroll = '0x1F5F';
+// var EnergyBolt_scroll = '0x1F56';
+// var Harm_scroll = '0x1F38';
+// var ParalyzeField_scroll = '0x1F5B';
+
+// var WallOfStone_scroll = '0x1F44';
+// var Recall_scroll = '0x1F4C';
+
+// var Dispel_scroll = '0x1F55';
+// var ReactiveArmor_scroll = '0x1F2D';
+// var MagicReflection_scroll = '0x1F50';
+//
+////////////////////////////////////////////////////////////////////////////////
+
+function 小加血() {
+    var Heal_scroll = '0x1F31';
+    if (Orion.Count(Heal_scroll) < 1) {
+        Orion.Print("没有卷了，赶紧跑！");
+        return;
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了赶紧跑！");
+        return;
+    }
+    Orion.WaitTargetObject(self);
+    if (Orion.Count(Heal_scroll) != 0)
+        Orion.UseType(Heal_scroll);
+    else {
+        Orion.Print("Scrolls Not Found, cast from Book");
+        Orion.Cast('Heal', self);
+    }
+}
+
+function 跑路() {
+    var Recall_scroll = '0x1F4C';
+    var 符石ID = '0x40032BC5';
+    if (Orion.Count(Recall_scroll) < 1) {
+        Orion.Print("没有Recall卷了，靠腿了！");
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了，听天由命吧！");
+        return;
+    }
+    Orion.WaitTargetObject(符石ID);
+    if (Orion.Count(Recall_scroll) != 0)
+        Orion.UseType(Recall_scroll);
+    else {
+        Orion.Print("Recall卷用完了，试试魔法书");
+        Orion.Cast('Recall');
+    }
+}
+
+function 小麻痹() {
+    var Paralyze_scroll = '0x1F52';
+    if (Orion.Count(Paralyze_scroll) < 1) {
+        Orion.Print("没有小麻痹卷轴了！");
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了赶紧跑！");
+        return;
+    }
+    Orion.WaitTargetObject(lasttarget);
+    if (Orion.Count(Paralyze_scroll) != 0) {
+        Orion.UseType(Paralyze_scroll);
+    } else {
+        Orion.Print("没有卷轴用魔法书了哦");
+        Orion.Cast('Paralyze');
+    }
+}
+
+function 加防() {
+    var ReactiveArmor_scroll = '0x1F2D';
+    var Dun_scroll = '0x1F3B';
+    if (Orion.Count(ReactiveArmor_scroll) < 1) {
+        Orion.Print("没有防卷轴了！");
+        return;
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了！");
+        return;
+    }
+    Orion.WaitTargetObject(self);
+    Orion.UseType(ReactiveArmor_scroll);
+}
+
+function 加盾() {
+    var Dun_scroll = '0x1F3B';
+    if (Orion.Count(Dun_scroll) < 1) {
+        Orion.Print("没有盾卷轴了！");
+        return;
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了！");
+        return;
+    }
+    Orion.WaitTargetObject(self);
+    Orion.UseType(Dun_scroll);
+}
+
+function 上下马() {
+    var horse = '0x000A7D3C';
+    if (Orion.FindObject(horse))
+        Orion.UseObject(horse);
+    else
+        Orion.UseObject(self);
+}
+
+function 放马卡位打自己() {
+    Orion.UseObject(self);
+    Orion.Wait(100);
+    Orion.WaitTargetTile('land', Player.X() - 1, Player.Y(), Player.Z());
+    Orion.Say('all go');
+    while (Orion.HaveTarget()) {
+        Orion.Wait(50);
+    }
+    Orion.Wait(300);
+    Orion.WaitTargetObject(self);
+    Orion.Say('all kill');
+    while (Orion.HaveTarget()) {
+        Orion.Wait(50);
+    }
+}
+
+
+function 反弹魔法() {
+    var 反弹卷_scroll = '0x1F50';
+    if (Orion.Count(反弹卷_scroll) < 1) {
+        Orion.Print("没有反弹卷轴了！");
+        return;
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了！");
+        return;
+    }
+    Orion.WaitTargetObject(self);
+    Orion.UseType(反弹卷_scroll);
+}
+
+function 驱散() {
+    var Dispel_scroll = '0x1F55';
+    if (Orion.Count(Dispel_scroll) < 1) {
+        Orion.Print("没有小麻痹卷轴了！");
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了赶紧跑！");
+        return;
+    }
+    Orion.WaitTargetObject(lasttarget);
+    if (Orion.Count(Dispel_scroll) != 0) {
+        Orion.UseType(Dispel_scroll);
+    } else {
+        Orion.Print("没有卷轴用魔法书了哦");
+        Orion.Cast('Dispel');
+    }
+}
+
+function 驱墙() {
+    var 驱墙_scroll = '0x1F4E';
+    if (Orion.Count(驱墙_scroll) < 1) {
+        Orion.Print("没有驱墙卷轴了！");
+    }
+    if (Player.Mana() < 10) {
+        Orion.Print("没有mana了！尝试喝Mana水");
+        return;
+    }
+    Orion.WaitTargetObject(lasttarget);
+    if (Orion.Count(驱墙_scroll) != 0) {
+        Orion.UseType(驱墙_scroll);
+    } else {
+        Orion.Print("没有卷轴用魔法书了哦");
+        Orion.Cast('Dispel Field');
+    }
+}
+
+function MANA水() {
+    var mana_水 = '0x0F09';
+    if (Orion.Count(mana_水) < 1)
+        Orion.Print("没有Mana水了！");
+    else
+        Orion.UseType(mana_水);
+}
+
+function 体力水() {
+    var 体力_水 = '0x0F0B';
+    if (Orion.Count(体力_水) < 1)
+        Orion.Print("没有体力水了！");
+    else
+        Orion.UseType(体力_水);
+}
+
+function 隐身水() {
+    var 隐身_水 = '0x0631';
+    if (Orion.Count(隐身_水) < 1)
+        Orion.Print("没有隐身水了！");
+    else
+        Orion.UseType(隐身_水);
+}
+
+function 体力MANA自动() {
+    while (true) {
+        if (Player.Mana() < 11) {
+            Orion.UseType('0x0F09');
+        }
+
+        if (Player.Stam() < 25) {
+            Orion.UseType('0x0F0B');
+        }
+
+        Orion.Wait(3000);
+    }
+}

@@ -1,0 +1,44 @@
+var boxType = '0x0E7D|0x0E3E|0x0E7E|0x09AA'; // 箱子TYPE '0x09AB'//0x400A709E//
+var bagid = ''; // 放箱子的包ID通过GetBagID获取(里面设置放箱子的包的TYPE)
+var bagType = '0x0E80'; // 放箱子包的TYPE//backpack
+var isUseHiding = true; // 是否使用隐身
+function 摆箱子() {
+    if (isUseHiding && !Player.Hidden())
+        Orion.UseSkill('hiding'); // 用隐身
+    GetBagID();
+    var timenow = Orion.Now();
+    var boxes = Orion.FindTypeEx(boxType, any, bagid);
+    for (var i = -4; i <= 4; i++) {
+        for (var k = -4; k <= 4; k++) {
+            if ((i == 4) || (k == -4) || (k == 4) || (i == -4)) {
+                Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + k, Player.Y() + i, Player.Z());
+                Orion.Wait(50);
+            }
+        }
+    }
+    Orion.Print("用时:" + (Orion.Now() - timenow));
+}
+
+function 拾箱子() {
+    GetBagID();
+    var boxes = Orion.FindTypeEx(boxType, any, ground);
+    boxes.forEach(function (box) {
+        Orion.MoveItem(box.Serial(), 1, bagid);
+        Orion.Wait('40');
+    });
+}
+
+function 脚下箱子() {
+    GetBagID();
+    var boxes = Orion.FindTypeEx(boxType, any, bagid);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X(), Player.Y(), Player.Z());
+}
+
+function GetBagID() {
+    var bags = Orion.FindTypeEx(bagType, any, backpack);
+    if (bags.length > 0) {
+        bagid = bags[0].Serial(); // 找到指定类型的包用于存箱子
+    } else {
+        bagid = backpack; // 没有放箱子的包就用背包
+    }
+}

@@ -1,0 +1,9 @@
+function 点蛛网() {
+    while (true) {
+        if (Orion.FindType('0x0EE4|0x0EE5|0x0EE3|0x0EE6', 'any', 'ground', 'item', '1').length > 0) {
+            Orion.UseFromGround('0x0EE4|0x0EE5|0x0EE3|0x0EE6', 'any', '1');
+            Orion.Wait(100);
+
+        }
+    }
+}

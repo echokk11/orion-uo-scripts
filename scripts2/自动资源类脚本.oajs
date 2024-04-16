@@ -1,0 +1,136 @@
+function 自动砍树() {
+    //var axe = Orion.FindType("0x0313|0F4B|0F47|0F45|0x13FA|0x1442", "-1", "backpack");//在背包搜索斧子的ID
+    //var objaxe = Orion.FindObject(axe[0]);//赋值斧子ID
+    while (true) {
+        var Tiles = Orion.GetTilesInRect('tree', Player.X() - 50, Player.Y() - 50, Player.X() + 50, Player.Y() + 50);
+        //搜索周围12格树木树木
+        Orion.Print("范围内有" + Tiles.length + "颗树");
+        while (Tiles.length) //如果没有全部砍完，就逐棵依次砍完
+        {
+            for (i = 0; i < Tiles.length; i++) {
+                Tiles[i].distance = Orion.GetDistance(Tiles[i].X(), Tiles[i].Y())
+            }
+            Tiles.sort(function (mobA, mobB) {
+                return mobA.distance - mobB.distance;
+            });
+            var tile = Tiles.shift();//从第一颗树开始砍
+            Orion.WalkTo(tile.X(), tile.Y());
+            Orion.UseType("0x0313|0F4B|0F47|0F45|0x13FA|0x1442"); //使用斧子
+            Orion.WaitTargetTile('tree', tile.X(), tile.Y(), tile.Z());
+            Orion.Wait(3000);
+            Orion.Wait(100); //加入小延时，防止卡死
+        }
+    }
+}
+
+function 自动挖矿() {
+    //保险箱ID：0x4001691D
+    var SafeBox_x = 1254;//设置保险箱附近，可以操作的X坐标
+    var SafeBox_y = 1243;//设置保险箱附近，可以操作的Y坐标
+    while (true) {
+        //if (Player.Weight()>=Player.MaxWeight()*0.8) 判断负重，以后挖满了放保险箱
+        var Tiles = Orion.GetTilesInRect('cave', Player.X() - 50, Player.Y() - 50, Player.X() + 50, Player.Y() + 50);
+        //搜索周围的矿坑
+        Orion.Print("范围内有" + Tiles.length + "矿");
+        while (Tiles.length) //挖完搜索到的矿
+        {
+            for (i = 0; i < Tiles.length; i++) {
+                Tiles[i].distance = Orion.GetDistance(Tiles[i].X(), Tiles[i].Y()); //
+            }
+            Tiles.sort(function (mobA, mobB) {
+                return mobA.distance - mobB.distance;
+            });
+            var tile = Tiles.shift();//挖矿，并且把挖过的位置剔除列表
+            Orion.WalkTo(tile.X(), tile.Y());
+            Orion.UseType("0x0E85"); //使用锄头
+            Orion.WaitTargetTile('cave', tile.X(), tile.Y(), tile.Z());
+            Orion.Wait(4000);
+            //-----存保险箱的部分
+            if (Player.Weight() >= Player.MaxWeight() * 0.95) { //负重满了，就去存保险箱
+                Orion.WalkTo(SafeBox_x, SafeBox_y); //保险箱的位置
+                var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                while (ore.length) {
+                    var objore = ore[0];
+                    Orion.Print(objore)
+                    Orion.DragItem(objore);//鼠标提起矿石
+                    Orion.Wait('300');
+                    Orion.DropDraggedItem('0x4001691D');
+                    Orion.Wait('500');
+                    var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                }
+            }
+            //-------存保险箱的分割线-------
+            Orion.Wait(100); //加入小延时，防止卡死
+        }
+    }
+}
+
+function 自动挖矿_飞银行() {
+    //保险箱ID：0x4001691D
+    var R_bank = 0x400BEE91;//飞B矿银行的符石，要站在炉子旁边并且能开银行的坐标
+    var R_kuang = 0x40013B3E;//矿洞的坐标，最好是预定的起点坐标
+    var Bag_kuang = 0x400B8224;//银行中用来存矿的包ID
+    var start_x = 1267;//矿洞起始挖矿的坐标，最好是在矿洞的一侧角落位置
+    var start_y = 1246;//矿洞起始挖矿的坐标，最好是在矿洞的一侧角落位置
+    while (true) {
+        //if (Player.Weight()>=Player.MaxWeight()*0.8) 判断负重，以后挖满了放保险箱
+        Orion.WalkTo(start_x, start_y);//矿洞起始挖矿的坐标，最好是在矿洞的一侧角落位置
+        var Tiles = Orion.GetTilesInRect('cave', Player.X() - 50, Player.Y() - 50, Player.X() + 50, Player.Y() + 50);
+        //搜索周围的矿坑
+        Orion.Print("范围内有" + Tiles.length + "矿");
+        while (Tiles.length) //挖完搜索到的矿
+        {
+            for (i = 0; i < Tiles.length; i++) {
+                Tiles[i].distance = Orion.GetDistance(Tiles[i].X(), Tiles[i].Y()); //
+            }
+            Tiles.sort(function (mobA, mobB) {
+                return mobA.distance - mobB.distance;
+            });
+            var tile = Tiles.shift();//挖矿，并且把挖过的位置剔除列表
+            Orion.WalkTo(tile.X(), tile.Y());
+            Orion.UseType("0x0E85"); //使用锄头
+            Orion.WaitTargetTile('cave', tile.X(), tile.Y(), tile.Z());
+            Orion.Wait(4000);
+            //-----存银行的部分
+            if (Player.Weight() >= Player.MaxWeight() * 0.95) { //负重满了，就去存银行
+                Orion.Cast('32');//recall魔法
+                if (Orion.WaitForTarget(1000))
+                    Orion.TargetObject(R_bank);
+                Orion.Wait(3000);//等待魔法施放时间
+                var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                Orion.Say('bank');
+                while (ore.length) {
+                    var objore = ore[0];
+                    Orion.UseObject(objore);//冶炼矿石
+                    var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                    Orion.Wait(100);
+                }
+                var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                Orion.Say('bank');
+                while (ore.length) { //冶炼矿石
+                    var objore = ore[0];
+                    Orion.UseObject(objore);//冶炼矿石
+                    var ore = Orion.FindType("0x19B9|0x19BA|0x19B7|0x19B8", "-1", "backpack");//在背包搜索矿石
+                    Orion.Wait(500);
+                }
+                var ingot = Orion.FindType('0x1BEF|0x1BF5|0x1BE3|0x1BE9');//在背包搜索矿锭
+                while (ingot.length) { //存矿石进银行 0x400B8224
+                    var objingot = ingot[0];
+                    Orion.Print(objingot);
+                    Orion.DragItem(objingot);//鼠标提起矿石
+                    Orion.Wait(300);
+                    Orion.DropDraggedItem(Bag_kuang);
+                    Orion.Wait(500);
+                    var ingot = Orion.FindType('0x1BEF|0x1BF5|0x1BE3|0x1BE9');//在背包搜索矿锭
+                }
+                Orion.Cast('32');//recall魔法
+                if (Orion.WaitForTarget(1000))
+                    Orion.TargetObject(R_kuang);
+                Orion.Wait(3000);//等待魔法施放时间
+
+            }
+            //-------存银行的分割线-------
+            Orion.Wait(100); //加入小延时，防止卡死
+        }
+    }
+}

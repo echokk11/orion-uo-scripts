@@ -1,0 +1,237 @@
+function 打AG换钱() {
+    while (true) {
+        Orion.WalkTo(2462, 88);
+        tou1();
+        Orion.WalkTo(2462, 97);
+        Orion.UseObject('0x40015CE2');
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000076')) {
+                gump0.Select(Orion.CreateGumpHook(10));
+                Orion.Wait(100);
+            }
+        }
+    }
+}
+
+function tou1() {
+    Orion.ClearJournal
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Plate Helm (15 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var tous = Orion.FindType(0x1412, any, backpack);
+    if (tous.length) {
+        tou = Orion.FindObject(tous);
+        if (tou.Count() > 0) {
+            bozi1();
+        } else {
+            tou1();
+        }
+    }
+
+
+}
+
+
+function bozi1() {
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Platemail Gorget (10 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var bozis = Orion.FindType(0x1413, any, backpack);
+    if (bozis.length) {
+        bozi = Orion.FindObject(bozis);
+        if (bozi.Count() > 0) {
+            shoutao1();
+        } else {
+            bozi1();
+        }
+    }
+}
+
+function shoutao1() {
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Platemail Gauntlets (12 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var shoutaos = Orion.FindType(0x1414, any, backpack);
+    if (shoutaos.length) {
+        shoutao = Orion.FindObject(shoutaos);
+        if (shoutao.Count() > 0) {
+            jianbang1();
+        } else {
+            shoutao1();
+        }
+    }
+}
+
+function jianbang1() {
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Platemail Arms (18 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var jianbangs = Orion.FindType(0x1410, any, backpack);
+    if (jianbangs.length) {
+        jianbang = Orion.FindObject(jianbangs);
+        if (jianbang.Count() > 0) {
+            tui1();
+        } else {
+            jianbang1();
+        }
+    }
+}
+
+function tui1() {
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Platemail Legs (20 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var tuis = Orion.FindType(0x1411, any, backpack);
+    if (tuis.length) {
+        tui = Orion.FindObject(tuis);
+        if (tui.Count() > 0) {
+            xiong1();
+        } else {
+            tui1();
+        }
+    }
+}
+
+function xiong1() {
+    Orion.UseType('0x1BEF');
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "Blacksmithing")
+                menu0.Select('Colored Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu1 = Orion.GetMenu('last');
+        if (menu1 !== null) {
+            if (menu1.Name() === "Colored Armor & Shields")
+                menu1.Select('Agapite Armor');
+        }
+    }
+    if (Orion.WaitForMenu(1000)) {
+        var menu2 = Orion.GetMenu('last');
+        if (menu2 !== null) {
+            if (menu2.Name() === "Agapite Armor")
+                menu2.Select('Agapite Platemail (25 ingots)');
+            Orion.Wait(8000);
+        }
+    }
+    Orion.Wait(8000);
+    var xiongs = Orion.FindType(0x1411, any, backpack);
+    if (xiongs.length) {
+        xiong = Orion.FindObject(xiongs);
+        if (xiong.Count() < 1) {
+            xiong1();
+        }
+    }
+}
+
+function TBKX() {
+    Orion.UseObject('0x40018FB4'); //0x40018FB4
+}

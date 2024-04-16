@@ -1,0 +1,218 @@
+var config = {
+    "pickaxe": "0x0E85", //火锄
+    "sanwei": "0x0E2E", //三围石
+    "ore": "0x19B9|0x1BEF|0x1BEF|0x1BE9|0x1BE3|0x1BF50x19BA|0x19B8|0x19B8|0x19BA|0x19BA0x19B7|0x19B8|0x19BA|0x1BF5|0x19B9|0x19B8|0x19BA|0x19B9|0x19BA|0x19B8|0x19BA|0x19B7|0x19B7|0x19B7|0x19BA|0x19B7|0x19BA|0x19B8|0x19B7|0x19B7|", //原矿石类型
+    "box": "0x4000EAB2", //要存的箱子
+};
+
+var ingotType = '0x1BEF|0x1BEF|0x1BE9|0x1BE3|0x1BF50x19BA|0x19B8|0x19B8|0x19BA|0x19BA0x19B7|0x19B8|0x19BA|0x1BF5|0x19B9|0x19B8|0x19BA|0x19B9|0x19BA|0x19B8|0x19BA|0x19B7|0x19B7|0x19B7|0x19BA|0x19B7|0x19BA|0x19B8|0x19B7|0x19B7|'
+
+var bankCoords = {
+    "x": 2461, "y": 88  //银行坐标
+};
+var forgeCoords = {
+    "x": 2461, "y": 88  //熔矿坐标
+};
+var moonDoor = {
+    "x": 2461, "y": 88   //月门坐标
+};
+var miningDoor = {
+    "x": 2461, "y": 88   //进月门后人物坐标
+}
+
+
+var minePoints = {
+    1: {"x": 2472, "y": 63, "z": 0},
+    2: {"x": 2477, "y": 59, "z": 0},
+    3: {"x": 2472, "y": 55, "z": 0},
+    4: {"x": 2466, "y": 56, "z": 0},
+    5: {"x": 2466, "y": 52, "z": 0},
+    6: {"x": 2462, "y": 51, "z": 0},
+    7: {"x": 2462, "y": 56, "z": 0},
+    8: {"x": 2459, "y": 59, "z": 0},
+    9: {"x": 2456, "y": 61, "z": 0},
+    10: {"x": 2461, "y": 50, "z": 0},
+    11: {"x": 2457, "y": 54, "z": 0},
+    12: {"x": 2453, "y": 56, "z": 0},
+    13: {"x": 2454, "y": 50, "z": 0},
+    14: {"x": 2452, "y": 53, "z": 0},
+    15: {"x": 2475, "y": 51, "z": 0},
+    16: {"x": 2480, "y": 51, "z": 0},
+    17: {"x": 2485, "y": 51, "z": 0},
+    18: {"x": 2486, "y": 46, "z": 0},
+    19: {"x": 2481, "y": 46, "z": 0},
+    20: {"x": 2476, "y": 45, "z": 0},
+    21: {"x": 2478, "y": 44, "z": 0},
+    22: {"x": 2483, "y": 44, "z": 0},
+    23: {"x": 2438, "y": 94, "z": 0},
+    24: {"x": 2435, "y": 91, "z": 0},
+    25: {"x": 2430, "y": 91, "z": 0},
+    26: {"x": 2429, "y": 86, "z": 0},
+    27: {"x": 2425, "y": 86, "z": 0},
+    28: {"x": 2422, "y": 89, "z": 0},
+    29: {"x": 2421, "y": 91, "z": 0},
+    30: {"x": 2435, "y": 96, "z": 0},
+    31: {"x": 2431, "y": 95, "z": 0},
+    32: {"x": 2426, "y": 95, "z": 0},
+    33: {"x": 2426, "y": 100, "z": 0},
+    34: {"x": 2427, "y": 104, "z": 0},
+    35: {"x": 2428, "y": 109, "z": 0},
+    36: {"x": 2423, "y": 109, "z": 0}
+};
+
+function start() {
+    for (var i in minePoints) ;
+    var a = Orion.Random(1, 36);
+    while (Orion.WalkTo(minePoints[a]['x'], minePoints[a]['y'], minePoints[a]['z']) != true) {
+        Orion.WalkTo(minePoints[a]['x'], minePoints[a]['y'], minePoints[a]['z']);
+    }
+
+    if (Orion.WalkTo(minePoints[a]['x'], minePoints[a]['y'], minePoints[a]['z'])) {
+        Orion.Print("抵达起始点，开始挖矿");
+    }
+    mining();
+}
+
+function mining() {
+    var wes = 30; //人物负重-Weight
+    var xtile, ytile, findMsg;
+    var stopMsg = "You loosen some rocks|There is no ore|You can't mine|Someone has|Try mining|You have no line|That is too far away|You dig some|You put the|ore in your pack|ores in your pack|You broke the pickaxe|incorrectly entered a code|entered a true code";
+    for (xtile = -2; xtile <= 2; xtile++) {
+        for (ytile = -2; ytile <= 2; ytile++) {
+            Orion.WaitTargetTileRelative('mine', xtile, ytile, Player.Z());
+            Orion.Wait(150);
+            Orion.UseType(config['sanwei']);
+            Orion.UseType(config['pickaxe']);
+            findMsg = Orion.WaitJournal(stopMsg, Orion.Now(), Orion.Now() + 25000);
+            timer = Orion.Now();
+            if (findMsg.FindTextID() == 0) {
+                Orion.Print('loosen');
+                ytile--;
+            }
+            if (findMsg.FindTextID() == 8) {
+                Orion.Print('You put');
+                ytile--;
+            }
+            //丢石头();
+            var tiekuangshis = Orion.FindType(0x19B9, 0x0000, backpack);
+            if (tiekuangshis.length) {
+                tk = Orion.FindObject(tiekuangshis);
+                if (tk.Count() > 700) {
+                    熔矿();
+                }
+            }
+
+
+            if (findMsg.FindTextID() == 4) {
+                Orion.Print("离开了矿洞，准备回起始点。");
+                return start();
+            }
+        }
+    }
+    走路()
+    Orion.Wait(6000);
+}
+
+function 走路() {
+    var X = Orion.Random(-10, 10);
+    var Y = Orion.Random(-10, 10);
+    Orion.WalkTo(Player.X() - X, Player.Y() + Y);
+    Orion.Wait(1000);
+    var X = Orion.Random(-10, 10);
+    var Y = Orion.Random(-10, 10);
+    Orion.WalkTo(Player.X() + X, Player.Y() - Y);
+    Orion.Wait(1000);
+    checkPoint()
+    mining()
+}
+
+function 熔矿() {
+    Orion.Print("去熔矿");
+    while (Orion.WalkTo(forgeCoords["x"], forgeCoords["y"], 0, 0) != true) {
+        Orion.WalkTo(forgeCoords["x"], forgeCoords["y"], 0, 0);
+    }
+
+    if (Orion.WalkTo(forgeCoords["x"], forgeCoords["y"], 0, 0)) {
+        Orion.Print("抵达熔矿点")
+        var ores = Orion.FindType(config['ore'], -1, 'backpack');
+        if (ores && ores.length > 0) {
+            ores.forEach(function (items) {
+                Orion.UseObject(items)
+                var result = Orion.WaitJournal("You have no|You burn away|You smelt", Orion.Now(), Orion.Now() + 1000, 'me|sys');
+                Orion.Wait(800);
+
+            });
+        }
+    }
+    Orion.Print("熔矿完毕，存矿")
+    Orion.Wait(500);
+    SaveBox()
+}
+
+function SaveBox() {
+    while (Player.X() != bankCoords["x"] && Player.Y() != bankCoords["y"]) {
+        Orion.WalkTo(bankCoords["x"], bankCoords["y"], 0, 0)
+    }
+    开银行();
+    Orion.UseObject('0x40018FB4');
+    Orion.Wait(1000);
+    var _ingots = Orion.FindType(ingotType, -1, 'backpack')
+    if (_ingots && _ingots.length > 0) {
+        Orion.Print("背包内有矿");
+        _ingots.forEach(function (_item) {
+            Orion.Print("存矿中，请勿乱动");
+            Orion.MoveItem(_item, 0, config['box']);
+            Orion.Wait(1000);
+        });
+    }
+    Orion.Print("储存完毕，继续挖矿中,前往开始点");
+    Orion.Wait(3000);
+    start()
+
+}
+
+function checkPoint() {
+    //var =
+    if (Player.X() > 2488) {
+        Orion.Print("非挖矿地图");
+        while (Player.X() != moonDoor['x'] && Player.Y() != moonDoor['y']) {
+            Orion.WalkTo(moonDoor['x'], moonDoor['y'], 0, 0);
+        }
+        Orion.Wait(500);
+        Orion.WalkTo(Player.X() - 1, Player.Y(), 0, 0);
+        while (Player.X() != miningDoor['x'] && Player.Y() != miningDoor['y']) {
+            checkPoint()
+        }
+        start()
+    }
+    if (Player.X() > 2488 && Player.Y() > 111) {
+        Orion.Print("离开了矿洞，准备回起始点。");
+        start()
+    }
+}
+
+function 丢石头() {
+    Orion.MoveItemType('0x1363', 0x0000, backpack, 0, ground, Player.X(), Player.Y());
+}
+
+function fy() {
+    while (true) {
+        Orion.UseSkill('Detecting Hidden');
+        Orion.Wait(2000)
+    }
+}
+
+function TBKX() {
+    Orion.UseObject('0x40018FB4'); //0x40018FB4
+}
+
+function 开银行() {
+    Orion.Say('BANK');
+    if (Orion.WaitForGump(1000)) {
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000070')) {
+            gump0.Select(Orion.CreateGumpHook(1));
+            Orion.Wait(100);
+        }
+    }
+}

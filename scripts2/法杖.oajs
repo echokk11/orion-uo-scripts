@@ -1,0 +1,7 @@
+function UseStaffLastTarget() {
+    var myStaff = '0x40A563B6'			//填入你法杖的Serial ID
+    if (Orion.FindObject(myStaff)) {
+        Orion.UseObject(myStaff);
+        Orion.WaitTargetObject(lasttarget);
+    }
+}

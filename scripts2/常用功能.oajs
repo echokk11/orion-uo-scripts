@@ -1,0 +1,240 @@
+var boxType = '0x0E7D|0x0E3E|0x0E7E|0x09AA|0x053c'; // 箱子TYPE '0x09AB'//0x400A709E//
+var bagid = ''; // 放箱子的包ID通过GetBagID获取(里面设置放箱子的包的TYPE)
+var bagType = '0x0E80'; // 放箱子包的TYPE//backpack
+var isUseHiding = true; // 是否使用隐身
+var gong = 0x13FC //地火弩、爆炸弩
+var speedRate = 2
+
+function 摆箱子() {
+    if (isUseHiding && !Player.Hidden())
+        Orion.UseSkill('hiding'); // 用隐身
+
+    GetBagID();
+    var timenow = Orion.Now();
+
+    var boxes = Orion.FindTypeEx(boxType, any, bagid);
+
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() - 1, Player.Y() - 3, Player.Z() + 2);//上
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 2, Player.Y(), Player.Z() + 2);//下
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() - 1, Player.Y(), Player.Z() + 2);//左
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 2, Player.Y() - 3, Player.Z() + 2);//右
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X(), Player.Y() - 3, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 1, Player.Y() - 3, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() - 1, Player.Y() - 2, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() - 1, Player.Y() - 1, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 2, Player.Y() - 2, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 2, Player.Y() - 1, Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X() + 1, Player.Y(), Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X(), Player.Y(), Player.Z() + 2);
+    Orion.Wait(50);
+    Orion.Print("用时:" + (Orion.Now() - timenow));
+}
+
+function 拾箱子() {
+    GetBagID();
+    var boxes = Orion.FindTypeEx(boxType, any, ground);
+    boxes.forEach(function (box) {
+        Orion.MoveItem(box.Serial(), 1, bagid);
+        Orion.Wait('40');
+    });
+}
+
+function 脚下箱子() {
+    GetBagID();
+    var boxes = Orion.FindTypeEx(boxType, any, bagid);
+    Orion.MoveItem(boxes.shift().Serial(), 1, ground, Player.X(), Player.Y(), Player.Z());
+}
+
+function GetBagID() {
+    var bags = Orion.FindTypeEx(bagType, any, backpack);
+    if (bags.length > 0) {
+        bagid = bags[0].Serial(); // 找到指定类型的包用于存箱子
+    } else {
+        bagid = backpack; // 没有放箱子的包就用背包
+    }
+}
+
+function 药包到背包() {
+    var bags = Orion.FindTypeEx('0x0E76', 'any', backpack);//0x09B0
+    bags.forEach(function (bag) {
+        Orion.UseObject(bag.Serial());
+        Orion.Wait(1000);
+        var herbs = Orion.FindTypeEx('0x0F7B|0x0F84|0x0F8D|0x0F88|0x0F8C|0x0F85|0x0F86|0x0F7A', 'any', bag.Serial());
+        Orion.Print(herbs.Count);
+        herbs.forEach(function (herb) {
+            Orion.MoveItem(herb.Serial());
+            Orion.Wait(200);
+        });
+    });
+    bags.forEach(function (bag) {
+        Orion.MoveItem(bag.Serial(), 1, ground, Player.X(), Player.Y(), Player.Z() - 5);
+        Orion.Wait(80);
+    });
+}
+
+function 药罐存药() {
+    var speedRate = 1.0; // 变速倍数
+    var yaoguan = Orion.FindTypeEx("0x0EFE", -1, backpack)[0]
+
+    var CheckTime = Orion.Now(); //
+
+    while (true) {
+        Orion.DragItem(yaoguan.Serial(), 1);
+        Orion.Wait(200 * speedRate);
+        Orion.DropDraggedItem(self);
+        Orion.Wait(200 * speedRate);
+
+        if (Orion.Now() > CheckTime + 5000 * speedRate)
+
+            Orion.Print("START");
+        if (Orion.InJournal("请双击查看", self, 0, 'any', CheckTime, 0)) {
+            Orion.Print("请双击查看");
+            CheckTime = Orion.Now(); //
+
+            continue;
+        }
+
+        if (Orion.InJournal("请双击释放", self, 0, 'any', CheckTime, 0)) {
+            Orion.Print("请双击释放");
+            CheckTime = Orion.Now(); // 
+
+            continue;
+        }
+
+        if (Orion.InJournal("请双击并", self, 0, 'any', CheckTime, 0)) {
+            var herbs = Orion.FindTypeEx('0x0F7B|0x0F84|0x0F8D|0x0F88|0x0F8C|0x0F85|0x0F86|0x0F7A', 'any', backpack);
+
+            Orion.Print("Count:" + herbs.length);
+            herbs.forEach(function (herb) {
+                Orion.UseObject(yaoguan.Serial())
+                if (Orion.WaitForTarget(1000 * speedRate))
+                    Orion.TargetObject(herb.Serial());
+                Orion.Wait(50 * speedRate);
+            });
+
+            Orion.Print("请双击并");
+
+            // 补药开始
+            // 补药开始-补药结束为存药后补充一次药
+            Orion.DragItem(yaoguan.Serial(), 1);
+            Orion.Wait(200 * speedRate);
+            Orion.DropDraggedItem(self);
+            Orion.Wait(200 * speedRate);
+
+            Orion.Wait(500 * speedRate)
+            Orion.DragItem(yaoguan.Serial(), 1);
+            Orion.Wait(200 * speedRate);
+            Orion.DropDraggedItem(self);
+            Orion.Wait(200 * speedRate);
+
+            Orion.UseObject(yaoguan.Serial());
+            // 补药结束
+            return;
+        }
+        Orion.Wait(10);
+    }
+}
+
+//隐身
+function hiding() {
+    Orion.WarMode(0);
+    Orion.UseSkill('21');
+}
+
+function bishou() {
+    Orion.UseType(0x0F51);
+}
+
+function gong() {
+    Orion.UseType(gong);
+}
+
+function bxx() {
+    Orion.MoveItem('0x400A709E', 1, 'backpack');
+    Orion.UseObject('0x400A709E')
+    var bxxxx = Orion.FindObject('0x400A709E')
+    Orion.Print(bxxxx.X())
+    Orion.Print(bxxxx.Y())
+    Orion.Print(bxxxx.Z())
+    Orion.Print(Player.Z())
+
+}
+
+
+function jiepou() {
+    var sts = Orion.FindType('0x2006', any, 'ground', '', 4);
+    for (i = 0; i <= sts.length; i++) {
+        Orion.UseType('0x0490');//使用匕首
+        Orion.WaitForTarget();
+        Orion.TargetObject(sts[i]);
+        Orion.Wait(300);
+        Orion.UseObject(sts[i]);
+        Orion.Wait(300);
+        Orion.CancelTarget();
+    }
+//Orion.UseType('0x0490');//解剖完成后装备武器，如果有盾牌可添加一行。
+}
+
+function yinshenyi() {
+    Orion.UseType('0x1F03');
+    Orion.Wait(100);
+    Orion.WalkTo(4602, 3622, 30, 0, 5, 1);
+}
+
+function bank() {
+    Orion.Print(Player.BankSerial())
+    Orion.UseObject(Player.BankSerial());
+//var wp=Orion.FindType("0x0EFA",any,Player.BankSerial())
+//if (wp.length)
+//Orion.MoveItem(wp[0],1,backpack)
+}
+
+var wupin = '0x09AA|0x0E7D|0x09AB'//物品类型
+var gaodu = -48//高度
+function fang() {
+    var wupins = Orion.FindType(wupin, any, backpack)
+    if (wupins.length)
+        Orion.MoveItem(wupins[0], 1, ground, Player.X(), Player.Y(), Player.Z() + gaodu);
+}
+
+function dakai() {
+    Orion.UseObject('0x400AA828');
+}
+
+function qunshan() {
+    Orion.UseType('0x1F5D');
+    Orion.WaitForTarget();
+    Orion.TargetObject(self);
+    Orion.Wait(4000 * speedRate);
+}
+
+function heyao() {
+    while (true) {
+        Orion.UseType('0x0F06');
+        Orion.Wait('20000');
+    }
+}
+
+function 找怪() {
+    Orion.IgnoreReset();
+    var guais = Orion.FindType('0x0140', any, ground, 'near', 6)
+    if (guais.length) {
+        for (var i = 0; i <= guais.length; i++) {
+            var guai = Orion.FindObject(guais[i])
+            Orion.Print(guai.Name());
+//	if (guai!==null&&guai.Name()=='.')
+//	Orion.ClientLastTarget(guais[i]);
+        }
+    }
+}

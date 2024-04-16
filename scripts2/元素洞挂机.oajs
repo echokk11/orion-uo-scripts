@@ -1,0 +1,114 @@
+var sPutLootsBox = '0x4001E956';   //银行箱子或包包ID
+var sYaoGuanZi = '0x4000BD9A';		//银行药罐子ID
+var Shaguai = '0x40011826' //杀怪石头ID
+var list = xue //
+function AutoPVM() {
+    var myStaff = '0x40018B2B';		//填入你法杖的Serial ID
+    var zb = [
+        {'x': 5479, 'y': 171}, // 起点，杀怪路径
+        {'x': 5479, 'y': 198},		 //终点
+    ]
+
+    hjfdxhnd();
+    while (true) {
+        for (var i = 0; i < zb.length; i++) {
+
+            Orion.IgnoreReset();
+            Orion.Ignore(self);
+
+            while (true) {
+                if (Orion.WalkTo(zb[i].x, zb[i].y, Player.Z(), 0, 255, 1, 1, 1021)) {
+                    //Orion.Print('br');
+                    break;
+                } else {
+                    while (true) {
+                        var FindMons = Orion.FindTypeEx('!0x0FFFF', '-1', 'ground', 'mobile', '18', 'criminal|red|gray');
+                        Orion.Print('Monster Count:' + FindMons.length);
+
+                        FindMons.sort(function (mobA, mobB) {
+                            return mobA.Distance() - mobB.Distance();
+                        });
+
+                        if (!FindMons.length) {
+                            Orion.Wait(500);
+                            break;
+                        }
+
+                        var objMons = Orion.FindObject(FindMons[0].Serial());
+                        while (objMons.Exists()) {
+                            if (objMons.Distance() > 1) {
+                                Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 3, 255, 1, 1);
+                            }
+
+                            if (Orion.FindObject(myStaff)) {					//用杖杀怪
+                                Orion.UseObject(myStaff);
+                                Orion.WaitTargetObject(FindMons[0].Serial());
+                                Orion.Wait(1500);
+                            }
+
+                            if (Player.Hits() / Player.MaxHits() < 0.8) {		//加血
+                                Orion.BandageSelf();
+                                Orion.Wait(3000);
+                            }
+                            if (Player.Weight() > Player.MaxWeight() * 0.8) {	//超重HELP回城
+                                helpToB();
+                            }
+                        }
+                        Orion.Wait(2000);			//打完自动拾取物品预留时间
+                    }
+                    continue;
+                }
+            }
+        }
+    }
+
+    function hjfdxhnd() {
+        Orion.WalkTo(2475, 103, 0, 0, 255, 1, 0)
+        Orion.Wait(500)
+        Orion.WalkTo(2475, 100, 0, 0, 255, 1, 0)
+        Orion.Wait(5000)
+        Orion.WalkTo(2478, 97, 0, 0, 255, 1, 0)
+        Orion.Wait(5000)
+        Orion.WalkTo(1594, 1577, 0, 0, 255, 1, 0)
+        Orion.Wait(5000)
+        Orion.Say('bank');
+        Orion.WaitForGump(1000);
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed())) {
+            gump0.Select(Orion.CreateGumpHook(0));
+            Orion.Wait(100);
+        }
+
+        var items = Orion.FindList(list, backpack, '', '', '', false);  //PVMlootlist，修改为拾取列表的名字
+        for (var i = 0; i < items.length; i++) {
+            var looting = items[i];
+            Orion.MoveItem(looting, 0, sPutLootsBox);
+            Orion.Wait('moveitemdelay');
+        }
+
+        Orion.UseObject(sYaoGuanZi);
+        Orion.Wait(1000);
+        goNiao();
+    }
+
+    function goNiao() {
+        Orion.WarMode(false);
+        Orion.Cast('32');
+        if (Orion.WaitForTarget(1000))
+            Orion.TargetObject(Shaguai);
+    }
+
+    function helpToB() {
+        Orion.HelpGump();
+        if (Orion.WaitForGump(1000)) {
+            var gump0 = Orion.GetGump('last');
+            if ((gump0 !== null) && (!gump0.Replayed())) {
+                gump0.Select(Orion.CreateGumpHook(47));
+                Orion.Wait(100);
+            }
+        }
+        Orion.Wait(1000);
+        hjfdxhnd();
+    }
+
+}

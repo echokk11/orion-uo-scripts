@@ -1,0 +1,1135 @@
+function 杀药巡行B() {
+
+    while (true) {
+
+
+        if (Player.Y() !== 1629) {
+            Orion.HelpGump();
+            if (Orion.WaitForMenu(1500)) {
+                var menu0 = Orion.GetMenu('last');
+                if (menu0 !== null) {
+                    if (menu0.Name() === "help")
+                        menu0.Select('Help Tengda Word');
+                }
+            }
+            if (Orion.WaitForGump(1500)) {
+                var gump0 = Orion.GetGump('last');
+                if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000058')) {
+                    gump0.Select(Orion.CreateGumpHook(4));
+                    Orion.Wait(150);
+                }
+            }
+            if (Orion.WaitForGump(1500)) {
+                var gump1 = Orion.GetGump('last');
+                if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x0000022B')) {
+                    gump1.Select(Orion.CreateGumpHook(1));
+                    Orion.Wait(150);
+                }
+            }
+
+            杀药巡行B()
+        }
+
+        Orion.Wait(1000);
+
+
+        Orion.WalkTo(1480, 1632, 0)
+        Orion.Wait(100);
+        Orion.Step('6');
+        Orion.Wait(100);
+        Orion.Step('6');
+        Orion.Wait(1000);
+        zhengli();
+        Orion.WalkTo(1418, 1687, 0)
+        Orion.Wait(100);
+        Orion.WalkTo(1412, 1687, 0)
+        Orion.Wait(100);
+
+        Orion.Step('6');
+        Orion.Wait(1000);
+
+        Orion.WalkTo(1296, 1081, 0)
+        Orion.Wait(100);
+        Orion.Step('6');
+        Orion.Wait(1000);
+
+        Orion.WalkTo(5573, 629, 0)
+        Orion.Wait(100);
+        Orion.Step('6');
+        Orion.Wait(1000);
+
+        Orion.WalkTo(5482, 550, 0)
+
+        FindMonsterB();
+        FindMonsterB();
+
+        function FindMonsterB() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行C()
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+
+}
+
+
+function 杀药巡行C() {
+    while (true) {
+        Orion.WalkTo(5500, 546, 0)
+
+        FindMonsterC();
+        FindMonsterC();
+
+        function FindMonsterC() {
+            while (true) {
+
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x003B');
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行D()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行D() {
+    while (true) {
+        Orion.WalkTo(5491, 531, 0)
+
+        FindMonsterD();
+        FindMonsterD();
+
+        function FindMonsterD() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x003B');
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行E()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行E() {
+    while (true) {
+        Orion.WalkTo(5467, 543, 0)
+
+        FindMonsterE();
+        FindMonsterE();
+
+        function FindMonsterE() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x003B');
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行F()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行F() {
+    while (true) {
+        Orion.WalkTo(5454, 549, 0)
+
+        FindMonsterF();
+        FindMonsterF();
+
+        function FindMonsterF() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行G()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行G() {
+    while (true) {
+        Orion.WalkTo(5434, 536, 0)
+
+        FindMonsterG();
+        FindMonsterG();
+
+        function FindMonsterG() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H() {
+    while (true) {
+
+
+        Orion.WalkTo(5424, 531, 0)
+
+        FindMonsterH();
+        FindMonsterH();
+
+        function FindMonsterH() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H1()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H1() {
+    while (true) {
+
+
+        Orion.WalkTo(5411, 531, 0)
+
+        FindMonsterH1();
+        FindMonsterH1();
+
+        function FindMonsterH1() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H2()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H2() {
+    while (true) {
+
+
+        Orion.WalkTo(5411, 553, 0)
+
+        FindMonsterH2();
+        FindMonsterH2();
+
+        function FindMonsterH2() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H3()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H3() {
+    while (true) {
+
+
+        Orion.WalkTo(5395, 587, 0)
+
+        FindMonsterH3();
+        FindMonsterH3();
+
+        function FindMonsterH3() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H4()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H4() {
+    while (true) {
+
+
+        Orion.WalkTo(5395, 587, 0)
+
+        FindMonsterH4();
+        FindMonsterH4();
+
+        function FindMonsterH4() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H5()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H5() {
+
+    while (true) {
+        Orion.WalkTo(5412, 607, 0)
+        FindMonsterH5();
+        FindMonsterH5();
+
+        function FindMonsterH5() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H6()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+
+}
+
+
+function 杀药巡行H6() {
+    while (true) {
+
+
+        Orion.WalkTo(5399, 628, 0)
+
+        FindMonsterH6();
+        FindMonsterH6();
+
+        function FindMonsterH6() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H7()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H7() {
+    while (true) {
+
+
+        Orion.WalkTo(5441, 604, 0)
+
+        FindMonsterH7();
+        FindMonsterH7();
+
+        function FindMonsterH7() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H8()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H8() {
+    while (true) {
+
+
+        Orion.WalkTo(5461, 614, 0)
+
+        FindMonsterH8();
+        FindMonsterH8();
+
+        function FindMonsterH8() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H9()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H9() {
+    while (true) {
+
+
+        Orion.WalkTo(5485, 592, 0)
+
+        FindMonsterH9();
+        FindMonsterH9();
+
+        function FindMonsterH9() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H10()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H10() {
+    while (true) {
+
+
+        Orion.WalkTo(5499, 612, 0)
+
+        FindMonsterH10();
+        FindMonsterH10();
+
+        function FindMonsterH10() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行H11()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function 杀药巡行H11() {
+    while (true) {
+
+
+        Orion.WalkTo(5484, 612, 0)
+
+        FindMonsterH11();
+        FindMonsterH11();
+
+        function FindMonsterH11() {
+            while (true) {
+                Orion.IgnoreReset();
+                Orion.Ignore(self);
+                Orion.Ignore('0x001E');
+                Orion.Ignore('0x00002095');
+                Orion.Ignore('0x0000F9EE');
+
+
+                var FindMons = Orion.FindTypeEx("!0x0FFFF", "-1", "ground", "live", 10, "criminal|orange|red")
+                FindMons.sort(function (mobA, mobB) {
+                    return mobA.Distance() - mobB.Distance();
+                });
+
+                Orion.Print('Monster Count:' + FindMons.length);
+                if (!FindMons.length) {
+                    Orion.Wait(50);
+
+
+                    杀药巡行B()
+
+                }
+
+                var objMons = Orion.FindObject(FindMons[0].Serial());
+
+                Orion.Print('--- Monster: ' + objMons.Name());
+
+                while (objMons.Name()) {
+                    Orion.Print('IsDead:' + objMons.Dead());
+
+                    if (objMons.Distance() > 1) {
+                        Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, 0, 2, 1);
+                    }
+
+                    Orion.Attack(objMons.Serial());
+                    Orion.Wait(100);
+
+
+                }
+                Orion.Wait(5000);	// 打完怪暂停2秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+
+            }
+        }
+
+    }
+}
+
+
+function zhengli() {
+
+    Orion.Say('Bank');
+    Orion.Wait(1000);
+    放药()
+    Orion.Wait(1000);
+    放钱()
+    Orion.Wait(1000);
+
+}
+
+
+function 放钱() {
+    while (true) {
+        if (Player.Gold() > 1500000) {
+            大支票()
+        }
+        var LP = Orion.FindType('0x0EED|0x1B4C', 'any', 'backpack');
+        if (LP.length) {
+            Orion.MoveItem(LP, -1, 0x40A8CB59);
+            Orion.Wait(500);
+
+        } else
+            break
+    }
+}
+
+
+function 大支票() {
+    Orion.HelpGump();
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "help")
+                menu0.Select('Help Tengda Word');
+        }
+    }
+    if (Orion.WaitForGump(1000)) {
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000058')) {
+            gump0.Select(Orion.CreateGumpHook(9));
+            Orion.Wait(100);
+        }
+    }
+    if (Orion.WaitForGump(1000)) {
+        var gump1 = Orion.GetGump('last');
+        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x0000270F')) {
+            gump1.Select(Orion.CreateGumpHook(14));
+            Orion.Wait(100);
+        }
+    }
+}
+
+
+function 放药() {
+    while (true) {
+
+        var LP = Orion.FindType('0x0F7B|0x0F7A|0x0F84|0x0F85|0x0F86|0x0F88|0x0F8C|0x0F8D', 'any', 'backpack');
+        if (LP.length) {
+            Orion.MoveItem(LP, -1, 0x4001B564);
+            Orion.Wait(500);
+
+        } else
+            break
+    }
+}

@@ -1,0 +1,63 @@
+var bagType = '0x09B0'//存放拾取物品包的TYPE
+var bagid = '' //存放拾取物品包的id，由程序自行获取，初始为空
+var jpgj = '0x0F51'//解剖工具类型
+var gong = '0x13FC'//'0x13FC爆炸0x13B1闪电
+var wupin = '0x1BD1|0x0EED|0x0F3F|0x1BFB|0x0E34|0x0F82|0x0F7D'//要拾取的物品列表
+var jp = false//解剖开关
+var lt = true//拾取开关
+var speedRate = 2//变速倍数
+function 解剖拾取() {
+    while (true) {
+        if (jp)
+            jiepou();
+        if (lt)
+            autoloot();
+        Orion.Wait(1000);
+    }
+}
+
+//解剖
+function jiepou() {
+    var sts = Orion.FindType('0x2006', any, ground, '', 3)//查找尸体
+    if (sts.length) {
+        for (var i = 0; i <= sts.length; i++) {
+            Orion.UseType(jpgj);//使用工具解剖尸体
+            Orion.TargetObject(sts[i]);
+            Orion.Wait(300 * speedRate);
+            Orion.UseObject(sts[i]);
+            Orion.Wait(300 * speedRate);
+            autoloot();
+            Orion.Ignore(sts[i]);
+        }
+        Orion.UseType(gong);
+    }
+}
+
+//拾取
+function autoloot() {
+    GetBagID();
+    if (lastcontainer != bagid && lastcontainer != backpack && lastcontainer != Player.BankSerial())//lastobject非拾取包的话拾取
+    {
+        var bs = Orion.FindType('0x0E43|0x0E42|0x09AB|0x0E7C|0x0E40|0x0E41|0x0E75|0x0E76', any, lastcontainer)
+        for (var k = 0; k <= bs.length; k++) {
+            Orion.UseObject(bs[k]);
+            Orion.Wait(400 * speedRate);
+            var objs = Orion.FindType(wupin, any, bs[k])//查找要拾取的物品
+            for (var i = 0; i <= objs.length; i++) {
+                Orion.MoveItem(objs[i], -1, bagid);//拾取
+                Orion.Wait(60 * speedRate);
+            }
+        }
+    }
+}
+
+//查找拾取物品的包包
+function GetBagID() {
+    var bags = Orion.FindType(bagType, '0x0000', backpack);
+    if (bags.length) {
+        bagid = bags[0]; //找到指定类型的包id
+    } else {
+        bagid = backpack; //没有找到就用背包
+    }
+}
+

@@ -1,0 +1,35 @@
+function PvMWithStaff() {
+    while (true) {
+        if (!Player.Dead()) {
+            Orion.IgnoreReset();
+            Orion.Ignore(self);
+            var FindMons = Orion.FindTypeEx('!0x0FFFF|!0x0190|!0x0191', '-1', 'ground', 'mobile', '18', 'criminal|red|gray'); // -1 = any = 0x0FFF  |!0x0190
+            FindMons.sort(function (mobA, mobB) {
+                return mobA.Distance() - mobB.Distance();
+            });
+            Orion.Print('Monster Count :  ' + FindMons.length);
+            if (!FindMons.length) {
+                Orion.Wait(500);
+                continue;
+            }
+            var objMons = Orion.FindObject(FindMons[0].Serial());
+            Orion.Print('Monster: ' + objMons.Name());
+            while (objMons.Name()) {
+                Orion.Print(objMons.Name() + ' hits : ' + objMons.Hits() + '%');
+                if (objMons.Distance() > 3) { //贴近怪物的距离
+                    Orion.WalkTo(objMons.X(), objMons.Y(), objMons.Z(), 1, -1, 1, 1, 10000);
+                }
+                var myStaff = '0x40005B12'			//填入你法杖的Serial ID
+                if (Orion.FindObject(myStaff)) {
+                    Orion.UseObject(myStaff);
+                    Orion.WaitTargetObject(objMons.Serial());
+                    Orion.Say('Guard')
+                    Orion.Wait(2500);
+                }
+                // 打完怪暂停1秒给自动拾取功能保留时间,拾不完可以延长1000代表1秒
+                //Orion.Wait(1000);
+            }
+        }
+    }
+}
+

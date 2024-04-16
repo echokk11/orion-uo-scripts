@@ -1,0 +1,24 @@
+function GeneratedScript_164119() {
+    Orion.HelpGump();
+    if (Orion.WaitForMenu(1000)) {
+        var menu0 = Orion.GetMenu('last');
+        if (menu0 !== null) {
+            if (menu0.Name() === "help")
+                menu0.Select('Help *^_^*2023*^_^*');
+        }
+    }
+    if (Orion.WaitForGump(1000)) {
+        var gump0 = Orion.GetGump('last');
+        if ((gump0 !== null) && (!gump0.Replayed()) && (gump0.ID() === '0x00000058')) {
+            gump0.Select(Orion.CreateGumpHook(9));
+            Orion.Wait(100);
+        }
+    }
+    if (Orion.WaitForGump(1000)) {
+        var gump1 = Orion.GetGump('last');
+        if ((gump1 !== null) && (!gump1.Replayed()) && (gump1.ID() === '0x0000270F')) {
+            gump1.Select(Orion.CreateGumpHook(8));
+            Orion.Wait(100);
+        }
+    }
+}

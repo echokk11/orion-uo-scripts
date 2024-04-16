@@ -1,0 +1,11 @@
+function LvUpWeapon() {
+    while (true) {
+        if (Player.Mana() > 10) {
+            Orion.UseObject('0x40005B12');
+        } else {
+            Orion.WalkTo(1581, 1571, 0, 0, 255, 1, 0, '');
+            Orion.WalkTo(1581, 1570, 0, 0, 255, 1, 0, '');
+            Orion.UseObject('0x40005B12');
+        }
+    }
+}

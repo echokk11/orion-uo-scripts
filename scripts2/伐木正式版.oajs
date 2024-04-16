@@ -1,0 +1,50 @@
+var gj = 0x0f47 //砍柴工具
+var bx = "0x40007F03"//保险箱id
+var bxx = 1382//保险箱位置x
+var bxy = 1319//保险箱位置y
+var chao = 700//超重值，最好设置为最大载重的80%-90%
+function kaishi() {
+    var qx = Player.X()
+    var qy = Player.Y()
+    while (true) {
+        Orion.WalkTo(qx, qy)
+        for (var i = 0; i <= 40; i++) {
+            if (Player.Weight() > chao) {
+                var ppx = Player.X()//保存超重点坐标
+                var ppy = Player.Y()
+                Orion.WalkTo(bxx, bxy);//保险箱位置，可修改
+                Orion.UseObject(bx);
+                Orion.Wait(500);
+                var mutou = Orion.FindType('0x1BDD')
+                Orion.MoveItem(mutou[0], -1, lastobject);
+                Orion.Wait(500);
+                Orion.WalkTo(ppx, ppy);//返回超重点
+            }
+            Orion.WalkTo(qx + 10 + 10 * i, qy);
+            伐木();
+        }
+    }
+}
+
+function 伐木() {
+    var Tiles = Orion.GetTilesInRect('tree', Player.X() - 10, Player.Y() - 20, Player.X() + 10, Player.Y() + 20);
+    var tile = null;
+    for (var i = 0; i < Tiles.length; i++) {
+        tile = Tiles[i];
+        Orion.ClearJournal();
+        while (true) {
+            Orion.WalkTo(tile.X(), tile.Y());
+            Orion.WaitTargetTile('tree', tile.X(), tile.Y(), tile.Z());
+            Orion.Wait(100);
+            Orion.UseType(gj);
+            Orion.Wait(100);
+            Orion.CancelTarget();
+            if (Orion.InJournal("no logs")) {
+                Orion.ClearJournal();
+                break;
+            }
+            Orion.WaitJournal("pack", Orion.Now(), Orion.Now() + 5000);
+            continue;
+        }
+    }
+}
